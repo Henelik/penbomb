@@ -29,7 +29,7 @@ func FiberPenbomb(ctx *fiber.Ctx) error {
 
 	if strings.Contains(accept, "br") {
 		ctx.Set("Content-Encoding", "br")
-		ctx.Set("Content-Type", "application/octet-stream")
+		ctx.Set("Content-Type", "text/plain")
 		// SetBodyRaw writes the pre-compressed bytes verbatim, bypassing any
 		// Fiber compression middleware.
 		ctx.Response().SetBodyRaw(payloads.Brotli100GiB)
@@ -46,7 +46,7 @@ func FiberPenbomb(ctx *fiber.Ctx) error {
 	}
 
 	ctx.Set("Content-Encoding", "gzip")
-	ctx.Set("Content-Type", "application/octet-stream")
+	ctx.Set("Content-Type", "text/plain")
 
 	go func() {
 		w, err := gzip.NewWriterLevel(pw, gzip.BestCompression)

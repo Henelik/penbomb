@@ -29,7 +29,7 @@ func NetHTTPPenbomb(w http.ResponseWriter, r *http.Request) {
 
 	if strings.Contains(accept, "br") {
 		w.Header().Set("Content-Encoding", "br")
-		w.Header().Set("Content-Type", "application/octet-stream")
+		w.Header().Set("Content-Type", "text/plain")
 		_, _ = w.Write(payloads.Brotli100GiB)
 		return
 	}
@@ -43,7 +43,7 @@ func NetHTTPPenbomb(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Encoding", "gzip")
-	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Header().Set("Content-Type", "text/plain")
 
 	go func() {
 		gz, err := gzip.NewWriterLevel(pw, gzip.BestCompression)
