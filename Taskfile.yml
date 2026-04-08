@@ -1,0 +1,48 @@
+version: '3'
+
+vars:
+  BINARY_NAME: penbomb
+  MAIN_PATH: ./main.go
+  OUTPUT_PATH: ./{{.BINARY_NAME}}
+
+tasks:
+  build:
+    desc: Build the binary
+    cmds:
+      - go build -o {{.OUTPUT_PATH}} {{.MAIN_PATH}}
+
+  test:
+    desc: Run all tests
+    cmds:
+      - go test -race -coverprofile=coverage.out ./...
+      - go tool cover -html=coverage.out -o coverage.html
+
+  vet:
+    desc: Run go vet to check for potential errors
+    cmds:
+      - go vet ./...
+
+  tidy:
+    desc: Clean up go.mod and go.sum
+    cmds:
+      - go mod tidy
+
+  run:
+    desc: Build and run the binary
+    cmds:
+      - task: build
+      - '{{.OUTPUT_PATH}}'
+
+  clean:
+    desc: Clean up build artifacts
+    cmds:
+      - rm -f {{.OUTPUT_PATH}}
+      - rm -f coverage.out coverage.html
+
+  all:
+    desc: Run vet, tidy, test, and build
+    cmds:
+      - task: vet
+      - task: tidy
+      - task: test
+      - task: build
